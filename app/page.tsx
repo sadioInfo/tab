@@ -1,10 +1,70 @@
+import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col space-y-4 my-20">
-      <Navbar />
-    </div>
+    <>
+      
+      <main className="mx-auto max-w-7xl p-6 flex-1">
+
+      </main>
+    </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
