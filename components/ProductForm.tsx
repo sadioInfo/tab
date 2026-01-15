@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Product } from "@/type/product"
 import { useProductContext } from "@/lib/hooks/product"
+import toast from "react-hot-toast"
 
 
 
@@ -94,24 +95,65 @@ export function ProductForm({onClose}: ProductFormProps) {
   }, [product, isEditing, form])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    setIsSubmittiong(true)
 
-    const formattedValues = {
-      ...values,
-      price: parseFloat(values.price),
-      qteStock: values.qteStock ? parseFloat(values.qteStock) : 0,
-      qteMin: values.qteMin ? parseFloat(values.qteMin) : 0,
-    }
+    try {
+      const productData = {
+        nameProduct: values.nameProduct,
+        stock: values.nameStock,
+        price: parseFloat(values.price),
+        qteStock: values.qteStock ? parseFloat(values.qteStock) : 0,
+        qteMin: values.qteMin ? parseFloat(values.qteMin) : 0,
+        status: true
+      }
 
-    console.log("new valeur: ", formattedValues)
-    await new Promise((r) => setTimeout(r, 500))
-    
-    if(onClose){
-      onClose()
+      if (isEditing && product) {
+        // Mode ÉDITION - Appel API PATCH
+        const response = await fetch(`/api/products/${product.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productData)
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          toast.success('✅ Produit modifié avec succès!')
+          form.reset()
+          if (onClose) onClose()
+          router.refresh()
+        } else {
+          toast.error('❌ Erreur lors de la modification')
+        }
+      } else {
+        // Mode CRÉATION - Appel API POST
+        const response = await fetch('/api/products', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(productData)
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          toast.success('✅ Produit créé avec succès!')
+          form.reset()
+          if (onClose) onClose()
+          router.refresh()
+        } else {
+          toast.error('❌ Erreur lors de la création')
+        }
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      toast.error('❌ Une erreur est survenue')
+    } finally {
+      setIsSubmittiong(false)
     }
-    setTimeout(() =>{
-      router.push("/product")
-    },100)
   }
 
   // gestion de l'annulation
@@ -239,8 +281,8 @@ export function ProductForm({onClose}: ProductFormProps) {
             <Button type="button" variant="outline" onClick={handleCancel}>
               Annuler
             </Button>
-            <Button type="submit" className="bg-blue-900">
-              Enregistrer
+            <Button type="submit" className="bg-blue-900" disabled={isSubmitting}>
+              {isSubmitting ? "Enregistrement..." : "Enregistrer"}
             </Button>
           </div>
 
