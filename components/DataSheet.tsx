@@ -7,7 +7,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import { StockForm } from './StockForm'
+import { useProductContext } from '@/lib/hooks/product'
 
 
 type DataSheetProps = {
@@ -23,9 +23,20 @@ interface WithOnCloseProps {
 
 const DataSheet = ({triggerLabel, title, children}: DataSheetProps) => {
   const [open, setOpen] = useState(false);
+  const {product, isEditing, setIsEditing} = useProductContext()
+
+
+  useEffect(()=>{
+    if(isEditing){
+      setOpen(true)
+    }
+  }, [isEditing])
 
   //fonction pour fermer le sheet
-  const handleClose = () => {setOpen(false)}
+  const handleClose = () => {
+    setOpen(false)
+    setIsEditing(false)
+  }
 
   //clonage des childrens pour leur passer la prop onClose
   const childrenWithProps = React.Children.map(children, child =>{
@@ -37,13 +48,23 @@ const DataSheet = ({triggerLabel, title, children}: DataSheetProps) => {
 
   return (
     <div>
-        <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger className='bg-blue-900 text-xs font-bold uppercase text-gray-200 px-6 py-3 rounded-md'>
+        <Sheet open={open} onOpenChange={(openState) =>{
+          setOpen(openState)
+          if(!openState){
+            setIsEditing(false)
+          }
+        }}>
+          {!isEditing && (
+
+            <SheetTrigger className='bg-blue-900 text-xs font-bold uppercase text-gray-200 px-6 py-3 rounded-md hover:bg-blue-800'>
               {triggerLabel}
             </SheetTrigger>
+          )}
             <SheetContent>
                 <SheetHeader>
-                <SheetTitle>{title}</SheetTitle>
+                <SheetTitle>
+                  {isEditing && product ? `Modifier ${product.nameProduct}`: title}
+                </SheetTitle>
                 </SheetHeader>
                 {childrenWithProps}
             </SheetContent>

@@ -1,10 +1,9 @@
 import { DataTable } from '@/components/DataTable'
 import React from 'react'
-import { stockColumns } from '../stock/columns'
-import { dataProduct, productColumns } from './columns'
 import DataSheet from '@/components/DataSheet'
-import { StockForm } from '@/components/StockForm'
 import { ProductForm } from '@/components/ProductForm'
+import { dataProduct } from './data'
+import { productColumns } from './columns'
 
 
 

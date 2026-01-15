@@ -1,9 +1,12 @@
+import { ProductProvider } from '@/lib/hooks/product'
 import React from 'react'
 
 export default function Layout({children} : {children : React.ReactNode}){
     return (
-        <div>
-            {children}
-        </div>
+        <ProductProvider>
+            <div>
+                {children}
+            </div>
+        </ProductProvider>
     )
 }

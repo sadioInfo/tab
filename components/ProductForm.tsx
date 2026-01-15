@@ -21,8 +21,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
-import { Product } from "@/app/product/columns"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import { Product } from "@/type/product"
+import { useProductContext } from "@/lib/hooks/product"
 
 
 
@@ -50,13 +51,14 @@ const formSchema = z.object({
 
 interface ProductFormProps {
   onClose?: () => void
-  product?: Product | null // pour l'edition
-  isEditing?: boolean // pour savoir si on est en mode E ou A
+
 }
 
 
-export function ProductForm({onClose, product, isEditing = false}: ProductFormProps) {
+export function ProductForm({onClose}: ProductFormProps) {
   const router = useRouter()
+  const {product, isEditing} = useProductContext()
+  const [isSubmitting, setIsSubmittiong] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -79,6 +81,14 @@ export function ProductForm({onClose, product, isEditing = false}: ProductFormPr
         qteStock: product.qteStock.toString(),
         qteMin: product.qteMin.toString(),
 
+      })
+    }else{
+      form.reset({
+        nameProduct: "",
+        nameStock: "",
+        price: "",
+        qteStock: "",
+        qteMin: "",
       })
     }
   }, [product, isEditing, form])
@@ -239,3 +249,52 @@ export function ProductForm({onClose, product, isEditing = false}: ProductFormPr
     </div>
   )
 }
+
+//  const onSubmit = async (data: ProductFormValues) => {
+//     setIsSubmitting(true)
+    
+//     try {
+//       if (isEditing && product) {
+//         // Mode ÉDITION
+//         console.log('Mise à jour du produit:', product.id, data)
+        
+//         // Simulation de mise à jour dans dataProduct
+//         const index = dataProduct.findIndex(p => p.id === product.id)
+//         if (index !== -1) {
+//           dataProduct[index] = {
+//             ...dataProduct[index],
+//             ...data
+//           }
+//         }
+        
+//         alert('✅ Produit modifié avec succès!')
+//       } else {
+//         // Mode CRÉATION
+//         console.log('Création du produit:', data)
+        
+//         // Simulation d'ajout
+//         const newProduct = {
+//           id: (dataProduct.length + 1).toString(),
+//           ...data
+//         }
+//         dataProduct.push(newProduct)
+        
+//         alert('✅ Produit créé avec succès!')
+//       }
+
+//       // Réinitialiser le formulaire
+//       form.reset()
+      
+//       // Rafraîchir la page pour voir les changements
+//       setTimeout(() => {
+//         window.location.reload()
+//       }, 1000)
+
+//     } catch (error) {
+//       console.error('Erreur:', error)
+//       alert('❌ Une erreur est survenue')
+//     } finally {
+//       setIsSubmitting(false)
+//       if (onClose) onClose()
+//     }
+//   }
