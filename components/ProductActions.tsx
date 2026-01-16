@@ -19,7 +19,7 @@ import { Product } from '@/type/product'
 import toast from 'react-hot-toast'
 
 
-function Actions({ product }: { product: Product }) {
+function ProductActions({ product }: { product: Product }) {
 
   const router = useRouter();
   const { setProduct, setIsEditing } = useProductContext();
@@ -89,4 +89,4 @@ function Actions({ product }: { product: Product }) {
   )
 }
 
-export default Actions
+export default ProductActions

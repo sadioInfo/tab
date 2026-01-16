@@ -96,6 +96,8 @@ export function ProductForm({onClose}: ProductFormProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmittiong(true)
+    console.log("en cours d ajout")
+    
 
     try {
       const productData = {
@@ -129,6 +131,8 @@ export function ProductForm({onClose}: ProductFormProps) {
         }
       } else {
         // Mode CRÉATION - Appel API POST
+        console.log("mode ajout")
+        
         const response = await fetch('/api/products', {
           method: 'POST',
           headers: {
@@ -138,6 +142,8 @@ export function ProductForm({onClose}: ProductFormProps) {
         })
 
         const result = await response.json()
+        console.log("result: ", result)
+        
 
         if (result.success) {
           toast.success('✅ Produit créé avec succès!')
@@ -291,52 +297,3 @@ export function ProductForm({onClose}: ProductFormProps) {
     </div>
   )
 }
-
-//  const onSubmit = async (data: ProductFormValues) => {
-//     setIsSubmitting(true)
-    
-//     try {
-//       if (isEditing && product) {
-//         // Mode ÉDITION
-//         console.log('Mise à jour du produit:', product.id, data)
-        
-//         // Simulation de mise à jour dans dataProduct
-//         const index = dataProduct.findIndex(p => p.id === product.id)
-//         if (index !== -1) {
-//           dataProduct[index] = {
-//             ...dataProduct[index],
-//             ...data
-//           }
-//         }
-        
-//         alert('✅ Produit modifié avec succès!')
-//       } else {
-//         // Mode CRÉATION
-//         console.log('Création du produit:', data)
-        
-//         // Simulation d'ajout
-//         const newProduct = {
-//           id: (dataProduct.length + 1).toString(),
-//           ...data
-//         }
-//         dataProduct.push(newProduct)
-        
-//         alert('✅ Produit créé avec succès!')
-//       }
-
-//       // Réinitialiser le formulaire
-//       form.reset()
-      
-//       // Rafraîchir la page pour voir les changements
-//       setTimeout(() => {
-//         window.location.reload()
-//       }, 1000)
-
-//     } catch (error) {
-//       console.error('Erreur:', error)
-//       alert('❌ Une erreur est survenue')
-//     } finally {
-//       setIsSubmitting(false)
-//       if (onClose) onClose()
-//     }
-//   }

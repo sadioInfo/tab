@@ -1,13 +1,9 @@
 "use client"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { ArrowUpDown } from "lucide-react"
+import { Stock } from "@/type/stock"
+import StockActions from "@/components/StockActions"
 
 export const dataStock: Stock[] = [
   {
@@ -37,12 +33,7 @@ export const dataStock: Stock[] = [
   },
 ]
 
-export type Stock = {
-  id: string
-  nameStock: string
-  location: string
- 
-}
+
 
 export const stockColumns: ColumnDef<Stock>[] = [
   {
@@ -59,7 +50,6 @@ export const stockColumns: ColumnDef<Stock>[] = [
         }
       >
         Nom Stock
-        <ArrowUpDown />
       </Button>
     ),
   },
@@ -69,18 +59,8 @@ export const stockColumns: ColumnDef<Stock>[] = [
   },
   {
     id: "actions",
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
-            <MoreHorizontal />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem>Modifier</DropdownMenuItem>
-          <DropdownMenuItem>Supprimer</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({row}) => {
+        return <StockActions stock={row.original} />
+    }
   },
 ]

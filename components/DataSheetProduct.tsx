@@ -10,7 +10,7 @@ import {
 import { useProductContext } from '@/lib/hooks/product'
 
 
-type DataSheetProps = {
+type DataSheetProductProps = {
   triggerLabel: string
   title: string
   children: React.ReactNode
@@ -21,7 +21,7 @@ interface WithOnCloseProps {
   onClose?: () => void
 }
 
-const DataSheet = ({triggerLabel, title, children}: DataSheetProps) => {
+const DataSheetProduct = ({triggerLabel, title, children}: DataSheetProductProps) => {
   const [open, setOpen] = useState(false);
   const {product, isEditing, setIsEditing} = useProductContext()
 
@@ -73,4 +73,4 @@ const DataSheet = ({triggerLabel, title, children}: DataSheetProps) => {
   )
 }
 
-export default DataSheet
+export default DataSheetProduct

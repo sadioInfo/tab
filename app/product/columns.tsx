@@ -24,7 +24,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Product } from "@/type/product"
-import Actions from "@/components/Actions"
+import Actions from "@/components/ProductActions"
+import ProductActions from "@/components/ProductActions"
 
 
 export const productColumns: ColumnDef<Product>[] = [
@@ -77,7 +78,7 @@ export const productColumns: ColumnDef<Product>[] = [
   {
     id: "actions",
     cell: ({row}) => {
-      return <Actions product={row.original} />   
+      return <ProductActions product={row.original} />   
     }
     
   },
