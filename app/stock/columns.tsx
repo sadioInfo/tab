@@ -5,33 +5,7 @@ import { ArrowUpDown } from "lucide-react"
 import { Stock } from "@/type/stock"
 import StockActions from "@/components/StockActions"
 
-export const dataStock: Stock[] = [
-  {
-    id: "m5gr84i9",
-    nameStock: "Matam",
-    location: "Centre",
-  },
-  {
-    id: "m5gr84i9",
-    nameStock: "Matam",
-    location: "Centre",
-  },
-  {
-    id: "m5gr84i9",
-    nameStock: "Matam",
-    location: "Centre",
-  },
-  {
-    id: "m5gr84i9",
-    nameStock: "Matam",
-    location: "Centre",
-  },
-  {
-    id: "m5gr84i9",
-    nameStock: "Matam",
-    location: "Centre",
-  },
-]
+
 
 
 
@@ -59,8 +33,8 @@ export const stockColumns: ColumnDef<Stock>[] = [
   },
   {
     id: "actions",
-    cell: ({row}) => {
-        return <StockActions stock={row.original} />
+    cell: ({ row }) => {
+      return <StockActions stock={row.original} />
     }
   },
 ]

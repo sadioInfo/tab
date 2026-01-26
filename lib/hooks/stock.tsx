@@ -8,24 +8,23 @@ interface StockContextValue {
     setStock: React.Dispatch<React.SetStateAction<Stock | null>>
     isEditing: boolean
     setIsEditing: React.Dispatch<React.SetStateAction<boolean>>
-       
 }
 
 const StockContext = createContext<StockContextValue | undefined>(undefined)
 
 export const useStockContext = (): StockContextValue => {
     const context = useContext(StockContext)
-    if(!context){
+    if (!context) {
         throw new Error("StockContext doit être utiliser dans un StockContextProvider")
     }
     return context
 }
 
-interface StockProviderProps{
+interface StockProviderProps {
     children: React.ReactNode
 }
 
-export const StockProvider: React.FC<StockProviderProps> = ({children}) =>{
+export const StockProvider: React.FC<StockProviderProps> = ({ children }) => {
     const [stock, setStock] = useState<Stock | null>(null)
     const [isEditing, setIsEditing] = useState(false)
     return <StockContext.Provider value={{
@@ -37,5 +36,3 @@ export const StockProvider: React.FC<StockProviderProps> = ({children}) =>{
         {children}
     </StockContext.Provider>
 }
-
-

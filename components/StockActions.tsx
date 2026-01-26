@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { RiDeleteBinLine, RiEdit2Line, RiEyeLine } from 'react-icons/ri'
 import { useRouter } from 'next/navigation'
+import { useStockContext } from '@/lib/hooks/stock'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,13 +15,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import Link from 'next/link'
-import toast from 'react-hot-toast'
 import { Stock } from '@/type/stock'
-import { useStockContext } from '@/lib/hooks/stock'
+import toast from 'react-hot-toast'
 
 
-function StockActions
-({ stock }: { stock: Stock }) {
+function StockActions({ stock }: { stock: Stock }) {
 
   const router = useRouter();
   const { setStock, setIsEditing } = useStockContext();
@@ -33,29 +32,32 @@ function StockActions
 
   const handleDelete = async () => {
     setIsDeleting(true)
-    // try {
-    //   const response = await fetch(`/api//${product.id}`, {
-    //     method: 'DELETE'
-    //   })
+    try {
+      const response = await fetch(`/api/stocks/${stock.id}`, {
+        method: 'DELETE'
+      })
 
-    //   const result = await response.json()
+      const result = await response.json()
 
-    //   if (result.success) {
-    //     toast.success('✅ Produit supprimé avec succès!')
-    //     router.refresh()
-    //   } else {
-    //     toast.error('❌ Erreur lors de la suppression')
-    //   }
-    // } catch (error) {
-    //   console.error('Erreur:', error)
-    //   toast.error('❌ Une erreur est survenue')
-    // } finally {
-    //   setIsDeleting(false)
-    // }
+      if (result.success) {
+        toast.success('✅ Stock supprimé avec succès!')
+        router.refresh()
+      } else {
+        toast.error('❌ Erreur lors de la suppression')
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      toast.error('❌ Une erreur est survenue')
+    } finally {
+      setIsDeleting(false)
+    }
   }
 
   return (
     <div className="flex items-center justify-center space-x-2">
+      {/* <Link href={`/stock/${stock.id}`}>
+                <RiEyeLine className="w-5 h-5 cursor-pointer text-gray-500" />
+              </Link> */}
       <button onClick={handleEditClick}
       >
         <RiEdit2Line className="w-5 h-5 cursor-pointer text-gray-500" />

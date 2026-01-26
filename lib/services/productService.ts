@@ -55,9 +55,15 @@ export async function getProduct(id: string): Promise<Product | null> {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
+            const data = docSnap.data();
             return {
                 id: docSnap.id,
-                ...docSnap.data()
+                nameProduct: data.nameProduct,
+                stock: data.stock,
+                price: data.price,
+                qteStock: data.qteStock,
+                qteMin: data.qteMin,
+                status: data.status
             } as Product;
         } else {
             console.log("Aucun produit trouvé avec cet ID");
@@ -81,9 +87,15 @@ export async function getAllProducts(): Promise<Product[]> {
 
         // enlever le timestamp
         querySnapshot.forEach((doc) => {
+            const data = doc.data();
             products.push({
                 id: doc.id,
-                ...doc.data(),
+                nameProduct: data.nameProduct,
+                stock: data.stock,
+                price: data.price,
+                qteStock: data.qteStock,
+                qteMin: data.qteMin,
+                status: data.status
             } as Product);
         });
 
@@ -109,9 +121,15 @@ export async function getActiveProducts(): Promise<Product[]> {
         const products: Product[] = [];
 
         querySnapshot.forEach((doc) => {
+            const data = doc.data();
             products.push({
                 id: doc.id,
-                ...doc.data()
+                nameProduct: data.nameProduct,
+                stock: data.stock,
+                price: data.price,
+                qteStock: data.qteStock,
+                qteMin: data.qteMin,
+                status: data.status
             } as Product);
         });
 
