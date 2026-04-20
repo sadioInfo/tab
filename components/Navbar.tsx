@@ -12,6 +12,7 @@ const menuItems: MenuItem[] = [
     {label: 'Accueil', href: '/'},
     {label: 'Articles', href: '/product'},
     {label: 'Stock', href: '/stock'},
+    {label: 'Vente', href: '/sell'},
 ];
 
 const Navbar = () => {

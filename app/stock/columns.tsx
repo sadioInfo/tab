@@ -8,11 +8,11 @@ import StockActions from "@/components/StockActions"
 
 
 
-
 export const stockColumns: ColumnDef<Stock>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    id: "index",
+    header: "N°",
+    cell: ({row}) => row.index + 1
   },
   {
     accessorKey: "nameStock",

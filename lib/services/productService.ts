@@ -82,7 +82,8 @@ export async function getProduct(id: string): Promise<Product | null> {
 export async function getAllProducts(): Promise<Product[]> {
     try {
         console.log("🔍 Récupération de tous les produits...");
-        const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+        const q = query(collection(db, COLLECTION_NAME), orderBy("nameProduct", "asc"))
+        const querySnapshot = await getDocs(q);
         const products: Product[] = [];
 
         // enlever le timestamp

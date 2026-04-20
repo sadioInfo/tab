@@ -1,37 +1,14 @@
 "use client"
 import { ColumnDef } from "@tanstack/react-table"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { CiEdit } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
-import { FaEye } from "react-icons/fa";
-import Link from "next/link"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { Product } from "@/type/product"
-import Actions from "@/components/ProductActions"
 import ProductActions from "@/components/ProductActions"
 
 
 export const productColumns: ColumnDef<Product>[] = [
   {
-    accessorKey: "id",
-    header: "ID",
+    id: "index",
+    header: "N°",
+    cell: ({row}) => row.index + 1
   },
  
   {

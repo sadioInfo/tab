@@ -22,9 +22,9 @@ import {
 } from "@/components/ui/select"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { Product } from "@/type/product"
 import { useProductContext } from "@/lib/hooks/product"
 import toast from "react-hot-toast"
+import { Stock } from "@/type/stock"
 
 
 
@@ -60,6 +60,8 @@ export function ProductForm({onClose}: ProductFormProps) {
   const router = useRouter()
   const {product, isEditing} = useProductContext()
   const [isSubmitting, setIsSubmittiong] = useState(false)
+  const [stocks, setStocks] = useState<Stock[]>([])
+  const [loadingStocks, setLoadingStocks] = useState(true)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,6 +73,29 @@ export function ProductForm({onClose}: ProductFormProps) {
       qteMin: "",
     },
   })
+
+  // recuperation de tout les stock
+  useEffect(() => {
+    const fetchStocks = async () => {
+      try {
+        const res = await fetch("/api/stocks")
+        const result = await res.json()
+        if(result.success){
+          setStocks(result.data)
+        }
+      } catch (error) {
+        console.error("Erreur chargement stocks", error)
+        
+      }finally{
+        setLoadingStocks(false)
+      }
+    }
+    fetchStocks()
+  },[])
+  console.log("Stocks", stocks)
+
+
+  
 
   // Effet pour remplir le formulaire avec les données du produit
   useEffect(() =>{
@@ -206,16 +231,30 @@ export function ProductForm({onClose}: ProductFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Stock</FormLabel>
+                
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionner un stock" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="stock1">Stock Matam</SelectItem>
-                    <SelectItem value="stock2">Stock Lambanyi</SelectItem>
-                  </SelectContent>
+                    <SelectContent>
+                      {loadingStocks ? (
+                        <SelectItem value="loading" disabled>
+                          Chargement...
+                        </SelectItem>
+                      ) : stocks.length === 0 ? (
+                        <SelectItem value="empty" disabled>
+                          Aucun stock disponible
+                        </SelectItem>
+                      ) : (
+                        stocks.map((stock) => (
+                          <SelectItem key={stock.id} value={stock.nameStock}>
+                            {stock.nameStock}
+                          </SelectItem>
+                        ))
+                      )}
+                    </SelectContent>
                 </Select>
                 <FormMessage />
               </FormItem>

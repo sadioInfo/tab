@@ -6,7 +6,9 @@ import {
     getDocs,
     updateDoc,
     deleteDoc,
-    serverTimestamp
+    serverTimestamp,
+    query,
+    orderBy
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import { Stock, StockInput, StockUpdate } from "@/type/stock";
@@ -65,8 +67,10 @@ export async function getStock(id: string): Promise<Stock | null> {
  * @returns Un tableau de tous les stocks
  */
 export async function getAllStocks(): Promise<Stock[]> {
+
     try {
-        const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+        const q = query(collection(db, COLLECTION_NAME), orderBy("nameStock", "asc"))
+        const querySnapshot = await getDocs(q);
         const stocks: Stock[] = [];
 
         querySnapshot.forEach((doc) => {
